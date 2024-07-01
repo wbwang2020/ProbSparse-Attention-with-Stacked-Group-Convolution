@@ -6,10 +6,9 @@ import sys
 sys.path.insert(0, "utils")
 sys.path.insert(0, "models")
 # 确保导入路径正确
-from train_and_test import SGCT
-from data.dataloader import CSI_Dataset
+from train_and_test import train_and_test
+from utils.dataloaderN import CSI_Dataset
 from sklearn.model_selection import KFold
-
 
 def main():
     # 设置配置和默认值
@@ -20,7 +19,7 @@ def main():
     # 解析命令行参数
     args = parser.parse_args()
 
-    # 加载新数据集，更换环境需修改
+    # 加载新数据集
     model_state_path = "/kaggle/input/probthfgcs2/ProbTHFGCS2/best_model.pth"
     train_dataset = CSI_Dataset("/kaggle/input/ntu-fi-har/NTU-Fi_HAR/train_amp")
     test_dataset = CSI_Dataset("/kaggle/input/ntu-fi-har/NTU-Fi_HAR/test_amp")
@@ -53,13 +52,13 @@ def main():
 
         # X_train_fold, Y_train_fold, X_val_fold, Y_val_fold，都是numpy数组
         # 调用模型训练和评估函数
-        model, test_acc = SGCT(X_train_fold, X_val_fold, X_test,
-                                            Y_train_fold, Y_val_fold, Y_test,
-                                            num_classes, batch_size=64,
-                                            n_epochs=args.num_epochs,
-                                            name_classes=class_names,
-                                            patience=6, fold_num=fold,
-                                            model_state_path=model_state_path)
+        model, test_acc = train_and_test(X_train_fold, X_val_fold, X_test,
+                                             Y_train_fold, Y_val_fold, Y_test,
+                                             num_classes, batch_size=32,
+                                             n_epochs=args.num_epochs,
+                                             name_classes=class_names,
+                                             patience=6, fold_num=fold,
+                                             model_state_path=model_state_path)
         # 比较并保存最佳模型
         if test_acc > best_acc:
             best_acc = test_acc
@@ -70,7 +69,7 @@ def main():
     # 最后，保存最佳模型的状态
     if best_model is not None:
         # 模型使用PyTorch，根据实际情况调整保存方式
-        torch.save(best_model.state_dict(), '/kaggle/working/best_model.pth')  #更换环境需修改
+        torch.save(best_model.state_dict(), '/kaggle/working/best_model.pth')
 
     print("\nTesting Accuracy (Rocket) across {} folds: {:.2f}% ± {:.2f}%".format(
         args.k_folds, np.mean(test_accs) * 100, np.std(test_accs) * 100))

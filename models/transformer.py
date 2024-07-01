@@ -73,16 +73,19 @@ class TransformerModel(nn.Module):
             ResidualAdd(nn.Sequential(
                 nn.LayerNorm(d_model),
                 AttentionLayer(
-                    ProbAttention(mask_flag=False, factor=5, scale=None, attention_dropout=0.1, output_attention=False),
+                    ProbAttention(mask_flag=False, factor=5, scale=None, 
+                                  attention_dropout=0.1, output_attention=False),
                     d_model, nhead, d_model // nhead, d_model // nhead)
             )),
             ResidualAdd(nn.Sequential(
                 nn.LayerNorm(d_model),
-                ConvolutionBlock1(d_model, convolution_hidden_dim, kernel_size=3, dropout_rate=0.5, groups=3)
+                ConvolutionBlock1(d_model, convolution_hidden_dim, 
+                                  kernel_size=3, dropout_rate=0.5, groups=3)
             )),
             ResidualAdd(nn.Sequential(
                 nn.LayerNorm(d_model),
-                ConvolutionBlock2(250, 250, kernel_size=3, dropout_rate=0.5, groups=2)
+                ConvolutionBlock2(250, 250, 
+                                  kernel_size=3, dropout_rate=0.5, groups=2)
             ))
         )
         self.transformer_encoder = TransformerEncoder(self.encoder_layer, num_layers)
@@ -115,4 +118,5 @@ class TransformerModel(nn.Module):
 
         x = self.dropout(self.LN2(x))
         x = self.fc1(x)
+        # 使用nn.CrossEntropyLoss损失函数，已经内置了softmax。
         return x
