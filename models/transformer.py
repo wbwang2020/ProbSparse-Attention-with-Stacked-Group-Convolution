@@ -118,5 +118,6 @@ class TransformerModel(nn.Module):
 
         x = self.dropout(self.LN2(x))
         x = self.fc1(x)
-        # 使用nn.CrossEntropyLoss损失函数，已经内置了softmax。
+        # 使用nn.CrossEntropyLoss损失函数，已经内置了softmax，故训练时不需要额外添加softmax。
+        # 最后需要的是预测的类别，验证测试阶段预测时都使用了torch.argmax()函数获取预测结果的类别索引，故不需要额外添加softmax。
         return x
