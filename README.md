@@ -24,4 +24,4 @@ Comparison with reference deep learning models (all using the average accuracy o
 
 
 # Citation 
-[1] Y. Dao, H. Zhang, S. Feng, J. Fang and W. Wang, "ProbSparse Attention With Stacked Group Convolution for Wireless Signal-based Human Activity Recognition," to appear in Proceedings 2024 International Conference on Wireless Communications and Signal Processing (WCSP'24).
+[1] D. Yi, H. Zhang, S. Feng, J. Fang and W. Wang, "ProbSparse Attention with Stacked Group Convolution for Wireless Signal-Based Human Activity Recognition," 2024 16th International Conference on Wireless Communications and Signal Processing (WCSP), Hefei, China, 2024, pp. 1349-1354, doi: 10.1109/WCSP62071.2024.10827307.
